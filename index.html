@@ -1,176 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UAM | Urban Air Mobility</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYPATH | Future of UAM</title>
+    <style>
+        :root {
+            --primary-bg: #0a0a12;
+            --accent-blue: #3a86ff;
+            --text-gray: #a0a0c0;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+        body {
+            margin: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background-color: var(--primary-bg);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        /* Language Selector */
+        .lang-selector {
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .lang-btn {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-gray);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-  color: white;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-}
-.logo { font-size: 24px; font-weight: bold; color: #a855f7; }
-nav a { margin: 0 10px; color: white; text-decoration: none; }
+        /* Hero Section */
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #3a86ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
 
-select {
-  background: #111;
-  color: white;
-  border: none;
-  padding: 5px;
-}
+        /* Features Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease, border 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            background: rgba(58, 134, 255, 0.1);
+        }
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+        }
 
-.hero { text-align: center; padding: 120px 20px; }
-.hero h1 { font-size: 42px; }
-.hero p { opacity: 0.8; }
-
-.section { padding: 60px 20px; text-align: center; }
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-  gap: 20px;
-  margin-top: 30px;
-}
-.card {
-  background: rgba(255,255,255,0.05);
-  padding: 20px;
-  border-radius: 12px;
-}
-</style>
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate { animation: fadeInUp 0.8s ease forwards; }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <div class="logo">UAM</div>
-  <div>
-    <select onchange="setLang(this.value)">
-      <option value="en">English</option>
-      <option value="ko">한국어</option>
-      <option value="zh">中文</option>
-      <option value="ar">العربية</option>
-      <option value="hi">हिन्दी</option>
-      <option value="es">Español</option>
-    </select>
-  </div>
-</header>
+<div class="container">
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" onclick="setLang('zh')">中文</button>
+        <button class="lang-btn" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+        <button class="lang-btn" onclick="setLang('es')">Español</button>
+        <button class="lang-btn" onclick="setLang('pt')">Português</button>
+        <button class="lang-btn" onclick="setLang('uk')">Українська</button>
+        <button class="lang-btn" onclick="setLang('ja')">日本語</button>
+        <button class="lang-btn" onclick="setLang('ru')">Русский</button>
+    </div>
 
-<section class="hero">
-  <h1 id="title"></h1>
-  <p id="subtitle"></p>
-</section>
+    <header class="animate">
+        <h1 id="main-title">UAM 혁신</h1>
+        <p class="subtitle" id="main-desc">도시의 경계를 넘어, 하늘을 자유롭게 연결하는 차세대 에어 모빌리티 솔루션입니다.</p>
+    </header>
 
-<section class="section">
-  <h2 id="about_title"></h2>
-  <p id="about_text"></p>
-</section>
-
-<section class="section">
-  <h2 id="feature_title"></h2>
-  <div class="cards">
-    <div class="card"><h3 id="f1"></h3></div>
-    <div class="card"><h3 id="f2"></h3></div>
-    <div class="card"><h3 id="f3"></h3></div>
-    <div class="card"><h3 id="f4"></h3></div>
-  </div>
-</section>
+    <div class="grid animate" style="animation-delay: 0.2s;">
+        <div class="card">
+            <span class="icon">🚀</span>
+            <h3 id="f1-t">eVTOL 항공기</h3>
+            <p id="f1-d">수직 이착륙 기술로 활주로 없는 도심 핵심부로의 정밀한 이동을 실현합니다.</p>
+        </div>
+        <div class="card">
+            <span class="icon">🌿</span>
+            <h3 id="f2-t">무공해 이동</h3>
+            <p id="f2-d">100% 전기 추진 시스템을 사용하여 소음과 탄소 배출 없는 친환경 미래를 만듭니다.</p>
+        </div>
+        <div class="card">
+            <span class="icon">⚡</span>
+            <h3 id="f3-t">초고속 연결</h3>
+            <p id="f3-d">교통 체증 없는 하늘 길을 통해 도심 내 이동 시간을 최대 70% 단축합니다.</p>
+        </div>
+        <div class="card">
+            <span class="icon">🏙️</span>
+            <h3 id="f4-t">스마트 시티 연동</h3>
+            <p id="f4-d">AI 기반 통합 관제 시스템으로 지상 교통수단과 완벽하게 연결됩니다.</p>
+        </div>
+    </div>
+</div>
 
 <script>
-const data = {
-  en: {
-    title:"Urban Air Mobility",
-    subtitle:"The Future of Transportation is in the Sky",
-    about_title:"About UAM",
-    about_text:"UAM uses eVTOL aircraft to move people and goods across cities quickly.",
-    feature_title:"Key Features",
-    f1:"eVTOL Aircraft",
-    f2:"Zero Emissions",
-    f3:"Fast Mobility",
-    f4:"Smart Integration"
-  },
-  ko: {
-    title:"도심 항공 모빌리티",
-    subtitle:"미래 교통은 하늘에 있습니다",
-    about_title:"UAM 소개",
-    about_text:"UAM은 도심에서 사람과 물류를 빠르게 이동시키는 차세대 항공 교통입니다.",
-    feature_title:"핵심 기능",
-    f1:"eVTOL 항공기",
-    f2:"무공해 이동",
-    f3:"초고속 이동",
-    f4:"스마트 도시 연동"
-  },
-  zh: {
-    title:"城市空中交通",
-    subtitle:"未来交通在天空",
-    about_title:"关于UAM",
-    about_text:"UAM利用电动垂直起降飞机在城市中快速运输人员和货物。",
-    feature_title:"核心功能",
-    f1:"电动垂直起降",
-    f2:"零排放",
-    f3:"高速移动",
-    f4:"智能集成"
-  },
-  ar: {
-    title:"النقل الجوي الحضري",
-    subtitle:"مستقبل النقل في السماء",
-    about_title:"حول UAM",
-    about_text:"UAM يستخدم طائرات كهربائية لنقل الأشخاص والبضائع بسرعة.",
-    feature_title:"الميزات",
-    f1:"إقلاع عمودي",
-    f2:"انبعاثات صفرية",
-    f3:"سرعة عالية",
-    f4:"تكامل ذكي"
-  },
-  hi: {
-    title:"शहरी हवाई गतिशीलता",
-    subtitle:"भविष्य का परिवहन आसमान में है",
-    about_title:"UAM के बारे में",
-    about_text:"UAM शहरों में लोगों और सामान को तेजी से ले जाता है।",
-    feature_title:"मुख्य विशेषताएं",
-    f1:"eVTOL विमान",
-    f2:"शून्य प्रदूषण",
-    f3:"तेज़ गति",
-    f4:"स्मार्ट सिस्टम"
-  },
-  es: {
-    title:"Movilidad Aérea Urbana",
-    subtitle:"El futuro del transporte está en el cielo",
-    about_title:"Sobre UAM",
-    about_text:"UAM usa aeronaves eléctricas para transporte rápido en ciudades.",
-    feature_title:"Características",
-    f1:"Aeronaves eVTOL",
-    f2:"Cero emisiones",
-    f3:"Alta velocidad",
-    f4:"Integración inteligente"
-  }
-};
+    const content = {
+        ko: { title: "UAM 혁신", desc: "도시의 경계를 넘어, 하늘을 자유롭게 연결하는 차세대 에어 모빌리티 솔루션입니다.", f1t: "eVTOL 항공기", f1d: "수직 이착륙 기술로 활주로 없는 도심 이동을 실현합니다.", f2t: "무공해 이동", f2d: "전기 추진 시스템으로 탄소 배출 없는 친환경 미래를 만듭니다.", f3t: "초고속 연결", f3d: "교통 체증 없는 하늘 길로 이동 시간을 획기적으로 단축합니다.", f4t: "스마트 시티 연동", f4d: "AI 관제 시스템으로 지상 교통과 완벽하게 연결됩니다." },
+        en: { title: "UAM Innovation", desc: "Next-gen air mobility solution connecting cities freely beyond boundaries.", f1t: "eVTOL Aircraft", f1d: "Vertical takeoff and landing technology for seamless urban travel.", f2t: "Zero Emission", f2d: "Eco-friendly future with 100% electric propulsion systems.", f3t: "Ultra-Fast", f3d: "Reducing travel time by up to 70% through traffic-free skyways.", f4t: "Smart City Link", f4d: "Perfect integration with ground transport via AI control." },
+        zh: { title: "UAM 创新", desc: "超越城市边界，自由连接天空的下一代空中交通解决方案。", f1t: "eVTOL 飞行器", f1d: "垂直起降技术，实现在没有跑道的城市中心精准移动。", f2t: "零排放出行", f2d: "采用纯电动力系统，打造无噪音、无碳排的环保未来。", f3t: "超高速连接", f3d: "通过无拥堵的天空航路，将城市通勤时间缩短 70%。", f4t: "智慧城市联动", f4d: "基于 AI 的综合管制系统，与地面交通完美衔接。" },
+        ar: { title: "ابتكار UAM", desc: "حلول التنقل الجوي من الجيل القادم التي تربط المدن بحرية.", f1t: "طائرات eVTOL", f1d: "تقنية الإقلاع والهبوط العمودي للتنقل الحضري الدقيق.", f2t: "نقل خالي من الانبعاثات", f2d: "مستقبل صديق للبيئة مع أنظمة دفع كهربائية بالكامل.", f3t: "اتصال فائق السرعة", f3d: "تقليل وقت السفر بنسبة 70٪ عبر الممرات الجوية.", f4t: "ربط المدينة الذكية", f4d: "تكامل مثالي مع وسائل النقل الأرضي عبر نظام AI." },
+        hi: { title: "UAM नवाचार", desc: "सीमाओं से परे शहरों को जोड़ने वाला अगली पीढ़ी का एयर मोबिलिटी समाधान।", f1t: "eVTOL विमान", f1d: "बिना रनवे के शहरी आवाजाही के लिए वर्टिकल टेकऑफ़ तकनीक।", f2t: "शून्य उत्सर्जन", f2d: "इलेक्ट्रिक प्रोपल्शन सिस्टम के साथ पर्यावरण के अनुकूल भविष्य।", f3t: "अल्ट्रा-फास्ट कनेक्ट", f3d: "ट्रैफिक-मुक्त हवाई मार्गों से यात्रा के समय में 70% की कमी।", f4t: "स्मार्ट सिटी इंटीग्रेशन", f4d: "AI सिस्टम के माध्यम से जमीनी परिवहन के साथ पूर्ण समन्वय।" },
+        es: { title: "Innovación UAM", desc: "Solución de movilidad aérea de próxima generación que conecta ciudades sin límites.", f1t: "Aeronave eVTOL", f1d: "Tecnología de despegue vertical para movilidad urbana sin pistas.", f2t: "Cero Emisiones", f2d: "Futuro ecológico con sistemas de propulsión 100% eléctricos.", f3t: "Conexión Ultra Rápida", f3d: "Reduce el tiempo de viaje hasta un 70% por rutas aéreas.", f4t: "Smart City Link", f4d: "Integración perfecta con el transporte terrestre mediante IA." },
+        pt: { title: "Inovação UAM", desc: "Solução de mobilidade aérea de última geração conectando cidades além das fronteiras.", f1t: "Aeronave eVTOL", f1d: "Tecnologia de decolagem vertical para mobilidade urbana precisa.", f2t: "Emissão Zero", f2d: "Futuro sustentável com sistemas de propulsão elétrica.", f3t: "Conexão Ultrarrápida", f3d: "Redução de até 70% no tempo de viagem pelas vias aéreas.", f4t: "Integração Smart City", f4d: "Conexão perfeita com transporte terrestre via sistema IA." },
+        uk: { title: "Інновації UAM", desc: "Рішення аеромобільності нового покоління, що вільно з’єднує міста.", f1t: "Літак eVTOL", f1d: "Технологія вертикального зльоту для міських подорожей без смуг.", f2t: "Нульові викиди", f2d: "Екологічне майбутнє з електричними системами тяги.", f3t: "Надшвидке сполучення", f3d: "Скорочення часу в дорозі до 70% через повітряні шляхи.", f4t: "Smart City Link", f4d: "Ідеальна інтеграція з наземним транспортом через ШІ." },
+        ja: { title: "UAM イノベーション", desc: "境界を越え、空で都市を自由につなぐ次世代エアモビリティ。", f1t: "eVTOL 航空機", f1d: "垂直離着陸技術により、滑走路のない都心移動を実現します。", f2t: "ゼロエミッション", f2d: "100%電気推進システムで、カーボンニュートラルな未来へ。", f3t: "超高速接続", f3d: "渋滞のない空路により、移動時間を最大70%短縮します。", f4t: "スマートシティ連携", f4d: "AI管制システムで地上交通と完璧にリンクします。" },
+        ru: { title: "Инновации UAM", desc: "Решения аэромобильности нового поколения для связи городов.", f1t: "Аппарат eVTOL", f1d: "Технология вертикального взлета для полетов в центре города.", f2t: "Нулевые выбросы", f2d: "Экологичное будущее с электрическими двигателями.", f3t: "Сверхскорость", f3d: "Сокращение времени в пути на 70% благодаря небу без пробок.", f4t: "Связь со Smart City", f4d: "Полная интеграция с наземным транспортом через ИИ." }
+    };
 
-function setLang(lang){
-  localStorage.setItem("lang",lang);
-  applyLang(lang);
-}
-
-function applyLang(lang){
-  const d = data[lang];
-  for(let key in d){
-    document.getElementById(key).innerText = d[key];
-  }
-}
-
-const userLang = navigator.language.slice(0,2);
-const savedLang = localStorage.getItem("lang");
-const defaultLang = savedLang || (data[userLang] ? userLang : "en");
-
-applyLang(defaultLang);
+    function setLang(lang) {
+        document.getElementById('main-title').innerText = content[lang].title;
+        document.getElementById('main-desc').innerText = content[lang].desc;
+        document.getElementById('f1-t').innerText = content[lang].f1t;
+        document.getElementById('f1-d').innerText = content[lang].f1d;
+        document.getElementById('f2-t').innerText = content[lang].f2t;
+        document.getElementById('f2-d').innerText = content[lang].f2d;
+        document.getElementById('f3-t').innerText = content[lang].f3t;
+        document.getElementById('f3-d').innerText = content[lang].f3d;
+        document.getElementById('f4-t').innerText = content[lang].f4t;
+        document.getElementById('f4-d').innerText = content[lang].f4d;
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+    }
 </script>
 
 </body>
