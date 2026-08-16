@@ -1,127 +1,259 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>HK UAM Command Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HK UAM 관제탑</title>
   <style>
-    :root { --green: #10b981; --bg: #030712; --panel: rgba(15, 23, 42, 0.8); }
-    body { background: var(--bg); color: #fff; margin: 0; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; }
+    /* 기본 스타일 및 다크 테마 설정 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
-    /* 헤더 */
-    header { padding: 15px 30px; background: #0b1329; border-bottom: 2px solid var(--green); display: flex; justify-content: space-between; align-items: center; }
-    .title { font-size: 22px; font-weight: 900; color: var(--green); letter-spacing: 2px; }
+    body {
+      background-color: #080f1a;
+      color: #00ffcc;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 16px;
+    }
 
-    /* 관제탑 비대칭 레이아웃 */
-    .command-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 20px; height: calc(100vh - 80px); box-sizing: border-box; }
-    
-    /* 레이더 스코프 메인 관제판 */
-    .radar-panel { background: var(--panel); border: 1px solid var(--green); border-radius: 12px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-    
-    /* 레이더 회전 빔 시뮬레이션 */
-    .radar-scope { width: 320px; height: 320px; border: 2px dashed var(--green); border-radius: 50%; position: relative; }
-    .radar-scope::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .radar-sweep { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, transparent 300deg, rgba(16, 185, 129, 0.4) 360deg); animation: sweep 3s linear infinite; }
-    
-    /* 레이더 상의 UAM 기체 점 */
-    .uam-blip { position: absolute; top: 35%; left: 60%; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 10px #ef4444; animation: blink 1s infinite; }
+    /* 상단 헤더 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #1a2f4c;
+      margin-bottom: 16px;
+    }
 
-    /* 우측 비행 텔레메트리 데이터 */
-    .telemetry-panel { background: var(--panel); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-    .data-box { background: rgba(0,0,0,0.5); padding: 15px; border-left: 4px solid var(--green); }
-    .data-box div { font-size: 12px; color: #9ca3af; }
-    .data-box h2 { margin: 5px 0 0 0; font-size: 24px; color: var(--green); }
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #00ffcc;
+    }
 
-    @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+    /* 언어 선택 드롭다운 */
+    select {
+      background: #0d1b2a;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    /* 메인 대시보드 그리드 (모바일 기본: 1열) */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      flex: 1;
+    }
+
+    /* 카드 기본 공통 스타일 */
+    .card {
+      background: #0d1b2a;
+      border: 1px solid #1a3a5c;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* 레이더 영역 */
+    .radar-card {
+      align-items: center;
+      min-height: 320px;
+      position: relative;
+    }
+
+    .card-title {
+      align-self: flex-start;
+      font-size: 1rem;
+      color: #88a0c0;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .radar-display {
+      width: 200px;
+      height: 200px;
+      border: 2px solid #00ffcc;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle, rgba(0, 255, 204, 0.05) 0%, rgba(0,0,0,0) 70%);
+      margin: 10px 0;
+    }
+
+    .target-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #ff3366;
+      border-radius: 50%;
+      position: absolute;
+      top: 40%;
+      right: 35%;
+      box-shadow: 0 0 10px #ff3366;
+    }
+
+    .tracking-status {
+      font-size: 0.95rem;
+      color: #00ffcc;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    /* 상태 지표 카드 영역 */
+    .metrics-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: #0d1b2a;
+      border: 1px solid #1a3a5c;
+      border-radius: 8px;
+      padding: 16px 20px;
+    }
+
+    .metric-label {
+      font-size: 0.95rem;
+      color: #88a0c0;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 2.2rem; /* 글자 크기 대폭 확대 */
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .metric-unit {
+      font-size: 1.1rem;
+      color: #00ffcc;
+      margin-left: 4px;
+    }
+
+    /* 태블릿 및 PC용 미디어 쿼리 (화면 가로 폭이 넓어질 때 2열 배치) */
+    @media (min-width: 768px) {
+      body {
+        padding: 24px;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 2fr 1fr;
+      }
+
+      .brand-title {
+        font-size: 1.5rem;
+      }
+
+      .radar-display {
+        width: 260px;
+        height: 260px;
+      }
+
+      .metric-value {
+        font-size: 2.5rem;
+      }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="title" id="txt-head">HK UAM COMMAND TOWER</div>
-  <select id="langSelect" onchange="updateUI(this.value)" style="background:#000; color:var(--green); border:1px solid var(--green); padding:6px 12px; border-radius:6px; cursor:pointer;">
-    <option value="ko">🇰🇷 한국어</option>
-    <option value="en">🇺🇸 English</option>
-    <option value="zh">🇨🇳 中文</option>
-    <option value="ar">🇸🇦 العربية</option>
-    <option value="hi">🇮🇳 हिन्दी</option>
-    <option value="es">🇪🇸 Español</option>
-    <option value="pt">🇧🇷 Português</option>
-    <option value="uk">🇺🇦 Українська</option>
-    <option value="ja">🇯🇵 日本語</option>
-    <option value="ru">🇷🇺 Русский</option>
-    <option value="vi">🇻🇳 Tiếng Việt</option>
-    <option value="th">🇹🇭 ภาษาไทย</option>
-    <option value="id">🇮🇩 Indonesia</option>
-    <option value="ps">🇵🇸 فلسطين</option>
-    <option value="de">🇩🇪 Deutsch</option>
-    <option value="it">🇮🇹 Italiano</option>
-    <option value="fr">🇫🇷 Français</option>
-  </select>
-</header>
+  <!-- 상단 관제탑 헤더 -->
+  <header>
+    <div class="brand-title" data-i18n="headerTitle">HK UAM 관제탑</div>
+    <select id="langSelect" onchange="changeLanguage(this.value)">
+      <option value="ko" selected>한국어</option>
+      <option value="en">English</option>
+    </select>
+  </header>
 
-<div class="command-grid">
-  <!-- 메인 레이더 스코프 -->
-  <div class="radar-panel">
-    <div style="position: absolute; top: 15px; left: 15px; font-weight: bold; color: var(--green);" id="txt-radar-title">AIRSPACE RADAR SCOPE</div>
-    <div class="radar-scope">
-      <div class="radar-sweep"></div>
-      <div class="uam-blip"></div>
-    </div>
-    <div style="margin-top: 20px; font-size: 14px;" id="txt-tracking">TARGET TRACKING: HK-AERO 01</div>
-  </div>
+  <!-- 메인 대시보드 레이아웃 -->
+  <main class="dashboard-grid">
+    
+    <!-- 좌측: 공중 레이더 스코프 -->
+    <section class="card radar-card">
+      <div class="card-title" data-i18n="radarTitle">공중 레이더 스코프</div>
+      <div class="radar-display">
+        <div class="target-dot"></div>
+      </div>
+      <div class="tracking-status">
+        <span data-i18n="targetLabel">표적 추적 중:</span> <strong>HK-AERO-01</strong>
+      </div>
+    </section>
 
-  <!-- 비행 텔레메트리 파라미터 -->
-  <div class="telemetry-panel">
-    <div class="data-box">
-      <div id="lbl-alt">FLIGHT ALTITUDE</div>
-      <h2>450 m</h2>
-    </div>
-    <div class="data-box">
-      <div id="lbl-speed">GROUND SPEED</div>
-      <h2>180 km/h</h2>
-    </div>
-    <div class="data-box">
-      <div id="lbl-bat">POWER CELL</div>
-      <h2>92 %</h2>
-    </div>
-    <button style="background: var(--green); color: #000; border: none; padding: 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: auto;" id="btn-land" onclick="alert('자동 착륙 시퀀스 시작')">
-      AUTO LANDING
-    </button>
-  </div>
-</div>
+    <!-- 우측: 핵심 수치 모니터링 카드 -->
+    <section class="metrics-container">
+      
+      <!-- 비행 고도 -->
+      <div class="metric-card">
+        <div class="metric-label" data-i18n="altitude">비행 고도</div>
+        <div class="metric-value">450 <span class="metric-unit">m</span></div>
+      </div>
 
-<script>
-  const i18n = {
-    ko: { head: "HK UAM 관제 센터", radar: "공중 레이더 스코프", track: "타겟 추적: HK-AERO 01", alt: "비행 고도", speed: "운항 속도", bat: "배터리 잔량", land: "자동 착륙 시작" },
-    en: { head: "HK UAM COMMAND TOWER", radar: "AIRSPACE RADAR SCOPE", track: "TARGET TRACKING: HK-AERO 01", alt: "FLIGHT ALTITUDE", speed: "GROUND SPEED", bat: "POWER CELL", land: "AUTO LANDING" },
-    zh: { head: "HK UAM 管制中心", radar: "空域雷达屏幕", track: "目标追踪: HK-AERO 01", alt: "飞行高度", speed: "地面速度", bat: "电池电量", land: "自动降落" },
-    ar: { head: "HK UAM مركز التحكم", radar: "شاشة الرادار الجوي", track: "تتبع الهدف: HK-AERO 01", alt: "ارتفاع الطيران", speed: "السرعة الأرضية", bat: "بطارية", land: "هبوط تلقائي" },
-    hi: { head: "HK UAM कमांड सेंटर", radar: "एयरस्पेस रडार स्कोप", track: "लक्ष्य ट्रैकिंग: HK-AERO 01", alt: "उड़ान की ऊंचाई", speed: "जमीनी गति", bat: "पावर सेल", land: "ऑटो लैंडिंग" },
-    es: { head: "TORRE DE CONTROL HK UAM", radar: "RADAR ESPACIO AÉREO", track: "SEGUIMIENTO: HK-AERO 01", alt: "ALTITUD DE VUELO", speed: "VELOCIDAD", bat: "BATERÍA", land: "ATERRIZAJE AUT." },
-    pt: { head: "TORRE DE CONTROLE HK UAM", radar: "RADAR ESPAÇO AÉREO", track: "RASTREAMENTO: HK-AERO 01", alt: "ALTITUDE DE VOO", speed: "VELOCIDADE", bat: "BATERIA", land: "POUSO AUTOMÁTICO" },
-    uk: { head: "ЦЕНТР КЕРУВАННЯ HK UAM", radar: "РАДАР ПОВІТРЯНОГО ПРОСТОРУ", track: "ВІДСТЕЖЕННЯ: HK-AERO 01", alt: "ВИСОТА ПОЛЬОТУ", speed: "ШВИДКІСТЬ", bat: "БАТАРЕЯ", land: "АВТОПОСАДКА" },
-    ja: { head: "HK UAM 管制センター", radar: "上空レーダース코ープ", track: "ターゲット追跡: HK-AERO 01", alt: "高度", speed: "速度", bat: "バッテリー", land: "自动着陆" },
-    ru: { head: "ЦЕНТР УПРАВЛЕНИЯ HK UAM", radar: "РАДАР ВОЗДУШНОГО ПРОСТРАНСТВА", track: "СЛЕЖЕНИЕ: HK-AERO 01", alt: "ВЫСОТА ПОЛЕТА", speed: "СКОРОСТЬ", bat: "БАТАРЕЯ", land: "АВТОПОСАДКА" },
-    vi: { head: "TRUNG TÂM ĐIỀU HÀNH HK UAM", radar: "MÀN HÌNH RADAR KHÔNG TRUNG", track: "THEO DÕI: HK-AERO 01", alt: "ĐỘ CAO BAY", speed: "TỐC ĐỘ", bat: "PIN", land: "HẠ CÁNH TỰ ĐỘNG" },
-    th: { head: "ศูนย์ควบคุม HK UAM", radar: "เรดาร์น่านฟ้า", track: "ติดตามเป้าหมาย: HK-AERO 01", alt: "ความสูงการบิน", speed: "ความเร็ว", bat: "แบตเตอรี่", land: "ลงจอดอัตโนมัติ" },
-    id: { head: "PUSAT KONTROL HK UAM", radar: "RADAR RUANG UDARA", track: "PELACAKAN: HK-AERO 01", alt: "KETINGGIAN TERBANG", speed: "KECEPATAN", bat: "BATERAI", land: "PENDARATAN OTOMATIS" },
-    ps: { head: "HK UAM د قوماندې مرکز", radar: "فضایی رادار سکوپ", track: "هدف تعقیب: HK-AERO 01", alt: "د پرواز لوړوالی", speed: "سرعت", bat: "بیټرۍ", land: "خودکار کښیناستل" },
-    de: { head: "HK UAM KONTROLLZENTRUM", radar: "LUFTRUM-RADAR", track: "ZIELVERFOLGUNG: HK-AERO 01", alt: "FLUGHÖHE", speed: "GESCHWINDIGKEIT", bat: "AKKU", land: "AUTO-LANDUNG" },
-    it: { head: "CENTRO DI COMANDO HK UAM", radar: "RADAR SPAZIO AEREO", track: "TRACCIAMENTO: HK-AERO 01", alt: "ALTITUDINE DI VOLO", speed: "VELOCITÀ", bat: "BATTERIA", land: "ATTERRAGGIO AUTO" },
-    fr: { head: "CENTRE DE COMMANDEMENT HK UAM", radar: "RADAR ESPACE AÉRIEN", track: "SUIVI CIBLE: HK-AERO 01", alt: "ALTITUDE DE VOL", speed: "VITESSE", bat: "BATTERIE", land: "ATTERRISSAGE AUTO" }
-  };
+      <!-- 대지 속도 -->
+      <div class="metric-card">
+        <div class="metric-label" data-i18n="speed">대지 속도</div>
+        <div class="metric-value">180 <span class="metric-unit">km/h</span></div>
+      </div>
 
-  function updateUI(lang) {
-    const d = i18n[lang];
-    document.getElementById('txt-head').innerText = d.head;
-    document.getElementById('txt-radar-title').innerText = d.radar;
-    document.getElementById('txt-tracking').innerText = d.track;
-    document.getElementById('lbl-alt').innerText = d.alt;
-    document.getElementById('lbl-speed').innerText = d.speed;
-    document.getElementById('lbl-bat').innerText = d.bat;
-    document.getElementById('btn-land').innerText = d.land;
-  }
-</script>
+      <!-- 배터리 잔량 -->
+      <div class="metric-card">
+        <div class="metric-label" data-i18n="power">배터리 잔량</div>
+        <div class="metric-value">92 <span class="metric-unit">%</span></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- i18n 언어 전환 스크립트 -->
+  <script>
+    const translations = {
+      ko: {
+        headerTitle: "HK UAM 관제탑",
+        radarTitle: "공중 레이더 스코프",
+        targetLabel: "표적 추적 중:",
+        altitude: "비행 고도",
+        speed: "대지 속도",
+        power: "배터리 잔량"
+      },
+      en: {
+        headerTitle: "HK UAM COMMAND TOWER",
+        radarTitle: "AIRSPACE RADAR SCOPE",
+        targetLabel: "TARGET TRACKING:",
+        altitude: "FLIGHT ALTITUDE",
+        speed: "GROUND SPEED",
+        power: "POWER CELL"
+      }
+    };
+
+    function changeLanguage(lang) {
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+  </script>
+
 </body>
 </html>
