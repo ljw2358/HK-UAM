@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HK UAM 관제탑</title>
   <style>
-    /* 기본 스타일 및 다크 테마 설정 */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -23,7 +21,6 @@
       padding: 16px;
     }
 
-    /* 상단 헤더 */
     header {
       display: flex;
       justify-content: space-between;
@@ -40,18 +37,17 @@
       color: #00ffcc;
     }
 
-    /* 언어 선택 드롭다운 */
     select {
       background: #0d1b2a;
       color: #00ffcc;
       border: 1px solid #00ffcc;
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 4px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       outline: none;
+      cursor: pointer;
     }
 
-    /* 메인 대시보드 그리드 (모바일 기본: 1열) */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -59,7 +55,6 @@
       flex: 1;
     }
 
-    /* 카드 기본 공통 스타일 */
     .card {
       background: #0d1b2a;
       border: 1px solid #1a3a5c;
@@ -70,7 +65,6 @@
       justify-content: center;
     }
 
-    /* 레이더 영역 */
     .radar-card {
       align-items: center;
       min-height: 320px;
@@ -116,7 +110,6 @@
       font-weight: 500;
     }
 
-    /* 상태 지표 카드 영역 */
     .metrics-container {
       display: grid;
       grid-template-columns: 1fr;
@@ -137,7 +130,7 @@
     }
 
     .metric-value {
-      font-size: 2.2rem; /* 글자 크기 대폭 확대 */
+      font-size: 2.2rem;
       font-weight: 700;
       color: #ffffff;
     }
@@ -148,7 +141,6 @@
       margin-left: 4px;
     }
 
-    /* 태블릿 및 PC용 미디어 쿼리 (화면 가로 폭이 넓어질 때 2열 배치) */
     @media (min-width: 768px) {
       body {
         padding: 24px;
@@ -175,19 +167,30 @@
 </head>
 <body>
 
-  <!-- 상단 관제탑 헤더 -->
   <header>
     <div class="brand-title" data-i18n="headerTitle">HK UAM 관제탑</div>
     <select id="langSelect" onchange="changeLanguage(this.value)">
       <option value="ko" selected>한국어</option>
-      <option value="en">English</option>
+      <option value="en">English (영어)</option>
+      <option value="zh">中文 (중국어)</option>
+      <option value="ar">العربية (아랍어)</option>
+      <option value="hi">हिन्दी (인도어/힌디어)</option>
+      <option value="es">Español (스페인어)</option>
+      <option value="pt">Português (브라질어)</option>
+      <option value="uk">Українська (우크라이나어)</option>
+      <option value="ja">日本語 (일본어)</option>
+      <option value="ru">Русский (러시아어)</option>
+      <option value="vi">Tiếng Việt (베트남어)</option>
+      <option value="th">ไทย (태국어)</option>
+      <option value="id">Bahasa Indonesia (인도네시아어)</option>
+      <option value="pa">العربية - فلسطين (팔레스타인어)</option>
+      <option value="de">Deutsch (독일어)</option>
+      <option value="it">Italiano (이태리어)</option>
+      <option value="fr">Français (프랑스어)</option>
     </select>
   </header>
 
-  <!-- 메인 대시보드 레이아웃 -->
   <main class="dashboard-grid">
-    
-    <!-- 좌측: 공중 레이더 스코프 -->
     <section class="card radar-card">
       <div class="card-title" data-i18n="radarTitle">공중 레이더 스코프</div>
       <div class="radar-display">
@@ -198,32 +201,24 @@
       </div>
     </section>
 
-    <!-- 우측: 핵심 수치 모니터링 카드 -->
     <section class="metrics-container">
-      
-      <!-- 비행 고도 -->
       <div class="metric-card">
         <div class="metric-label" data-i18n="altitude">비행 고도</div>
         <div class="metric-value">450 <span class="metric-unit">m</span></div>
       </div>
 
-      <!-- 대지 속도 -->
       <div class="metric-card">
         <div class="metric-label" data-i18n="speed">대지 속도</div>
         <div class="metric-value">180 <span class="metric-unit">km/h</span></div>
       </div>
 
-      <!-- 배터리 잔량 -->
       <div class="metric-card">
         <div class="metric-label" data-i18n="power">배터리 잔량</div>
         <div class="metric-value">92 <span class="metric-unit">%</span></div>
       </div>
-
     </section>
-
   </main>
 
-  <!-- i18n 언어 전환 스크립트 -->
   <script>
     const translations = {
       ko: {
@@ -241,6 +236,126 @@
         altitude: "FLIGHT ALTITUDE",
         speed: "GROUND SPEED",
         power: "POWER CELL"
+      },
+      zh: {
+        headerTitle: "HK UAM 控制塔",
+        radarTitle: "空域雷达屏幕",
+        targetLabel: "目标追踪中:",
+        altitude: "飞行高度",
+        speed: "地速",
+        power: "剩余电量"
+      },
+      ar: {
+        headerTitle: "برج مراقبة HK UAM",
+        radarTitle: "رادار المجال الجوي",
+        targetLabel: "تتبع الهدف:",
+        altitude: "ارتفاع الطيران",
+        speed: "السرعة الأرضية",
+        power: "طاقة البطارية"
+      },
+      hi: {
+        headerTitle: "HK UAM नियंत्रण टॉवर",
+        radarTitle: "हवाई क्षेत्र राडार स्कोप",
+        targetLabel: "लक्ष्य ट्रैकिंग:",
+        altitude: "उड़ान की ऊंचाई",
+        speed: "जमीनी गति",
+        power: "बैटरी पावर"
+      },
+      es: {
+        headerTitle: "TORRE DE CONTROL HK UAM",
+        radarTitle: "RADAR ESPACIO AÉREO",
+        targetLabel: "RASTREANDO OBJETIVO:",
+        altitude: "ALTITUD DE VUELO",
+        speed: "VELOCIDAD TERRESTRE",
+        power: "BATERÍA RESTANTE"
+      },
+      pt: {
+        headerTitle: "TORRE DE CONTROLE HK UAM",
+        radarTitle: "RADAR DE ESPAÇO AÉREO",
+        targetLabel: "RASTREAMENTO DE ALVO:",
+        altitude: "ALTITUDE DE VOO",
+        speed: "VELOCIDADE EM SOLO",
+        power: "NÍVEL DA BATERIA"
+      },
+      uk: {
+        headerTitle: "ДИСПЕТЧЕРСЬКА ВЕЖА HK UAM",
+        radarTitle: "РАДАР ПОВІТРЯНОГО ПРОСТОРУ",
+        targetLabel: "ВІДСТЕЖЕННЯ ЦІЛІ:",
+        altitude: "ВІСОТА ПОЛЬОТУ",
+        speed: "ШВИДКІСТЬ ВІДНОСНО ЗЕМЛІ",
+        power: "ЗАРЯД БАТАРЕЇ"
+      },
+      ja: {
+        headerTitle: "HK UAM 管制塔",
+        radarTitle: "上空レーダースコープ",
+        targetLabel: "目標追跡中:",
+        altitude: "飛行高度",
+        speed: "対地速度",
+        power: "バッテリー残量"
+      },
+      ru: {
+        headerTitle: "ДИСПЕТЧЕРСКАЯ ВЫШКА HK UAM",
+        radarTitle: "РАДАР ВОЗДУШНОГО ПРОСТРАНСТВА",
+        targetLabel: "ОТСЛЕЖИВАНИЕ ЦЕЛИ:",
+        altitude: "ВЫСОТА ПОЛЕТА",
+        speed: "ПУТЕВАЯ СКОРОСТЬ",
+        power: "ЗАРЯД БАТАРЕИ"
+      },
+      vi: {
+        headerTitle: "THÁP ĐIỀU KHIỂN HK UAM",
+        radarTitle: "RADA KHÔNG PHẬN",
+        targetLabel: "ĐANG THEO DÕI MỤC TIÊU:",
+        altitude: "ĐỘ CAO BAY",
+        speed: "TỐC ĐỘ MẶT ĐẤT",
+        power: "DUNG LƯỢNG PIN"
+      },
+      th: {
+        headerTitle: "หอบังคับการ HK UAM",
+        radarTitle: "เรดาร์น่านฟ้า",
+        targetLabel: "กำลังติดตามเป้าหมาย:",
+        altitude: "ความสูงการบิน",
+        speed: "ความเร็วภาคพื้นดิน",
+        power: "แบตเตอรี่คงเหลือ"
+      },
+      id: {
+        headerTitle: "MENARA KONTROL HK UAM",
+        radarTitle: "RADAR RUANG UDARA",
+        targetLabel: "PELACAKAN TARGET:",
+        altitude: "KETINGGIAN TERBANG",
+        speed: "KECEPATAN DARAT",
+        power: "DAYA BATERAI"
+      },
+      pa: {
+        headerTitle: "برج مراقبة HK UAM - فلسطين",
+        radarTitle: "رادار المجال الجوي",
+        targetLabel: "تتبع الهدف:",
+        altitude: "ارتفاع الطيران",
+        speed: "السرعة الأرضية",
+        power: "طاقة البطارية"
+      },
+      de: {
+        headerTitle: "HK UAM KONTROLLTURM",
+        radarTitle: "LUFTRAUM-RADAR",
+        targetLabel: "ZIELVERFOLGUNG:",
+        altitude: "FLUGHÖHE",
+        speed: "GESCHWINDIGKEIT ÜBER GRUND",
+        power: "BATTERIESTATUS"
+      },
+      it: {
+        headerTitle: "TORRE DI CONTROLLO HK UAM",
+        radarTitle: "RADAR SPAZIO AEREO",
+        targetLabel: "TRACCIAMENTO BERSAGLIO:",
+        altitude: "ALTITUDINE DI VOLO",
+        speed: "VELOCITÀ AL SUOLO",
+        power: "CARICA BATTERIA"
+      },
+      fr: {
+        headerTitle: "TOUR DE CONTRÔLE HK UAM",
+        radarTitle: "RADAR ESPACE AÉRIEN",
+        targetLabel: "SUIVI DE CIBLE:",
+        altitude: "ALTITUDE DE VOL",
+        speed: "VITESSE SOL",
+        power: "NIVEAU DE BATTERIE"
       }
     };
 
@@ -252,6 +367,13 @@
           el.textContent = translations[lang][key];
         }
       });
+      
+      // 아랍어/팔레스타인어 선택 시 우측에서 좌측으로 읽는 RTL 레이아웃 자동 전환
+      if (lang === 'ar' || lang === 'pa') {
+        document.body.style.direction = 'rtl';
+      } else {
+        document.body.style.direction = 'ltr';
+      }
     }
   </script>
 
