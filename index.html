@@ -1,197 +1,106 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKYPATH | Future of UAM</title>
-    <style>
-        :root {
-            --primary-bg: #0a0a12;
-            --accent-blue: #3a86ff;
-            --text-gray: #a0a0c0;
-            --card-bg: rgba(255, 255, 255, 0.05);
-        }
-        body {
-            margin: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-            background-color: var(--primary-bg);
-            color: white;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        /* Language Selector */
-        .lang-selector {
-            margin-bottom: 50px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .lang-btn {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-gray);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.9rem;
-        }
-        .lang-btn:hover, .lang-btn.active {
-            background: var(--accent-blue);
-            color: white;
-            border-color: var(--accent-blue);
-        }
+  <meta charset="UTF-8">
+  <title>HK Glass OS | Elite HUD</title>
+  <style>
+    :root { --primary: #38bdf8; --bg: #050a14; --glass: rgba(255, 255, 255, 0.05); }
+    body { background: var(--bg); color: #fff; margin: 0; font-family: 'Inter', -apple-system, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* Hero Section */
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #3a86ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-        }
-        p.subtitle {
-            font-size: 1.2rem;
-            color: var(--text-gray);
-            max-width: 700px;
-            margin: 0 auto 60px;
-        }
+    /* 글래스 모피즘 헤더 */
+    .header { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(56, 189, 248, 0.2); }
+    .title { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
 
-        /* Features Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 50px;
-        }
-        .card {
-            background: var(--card-bg);
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s ease, border 0.3s ease;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-        }
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-blue);
-            background: rgba(58, 134, 255, 0.1);
-        }
-        .icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-        .card p {
-            font-size: 0.95rem;
-            color: var(--text-gray);
-        }
+    /* 고급 언어 선택창 */
+    .lang-select { background: rgba(0,0,0,0.6); border: 1px solid var(--primary); color: #fff; padding: 8px 15px; border-radius: 20px; outline: none; cursor: pointer; }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate { animation: fadeInUp 0.8s ease forwards; }
-    </style>
+    /* 메인 HUD 영역 */
+    .hud-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    
+    /* 중앙 포커스 포인트 */
+    .focus-ring { width: 150px; height: 150px; border: 2px solid var(--primary); border-radius: 50%; position: relative; animation: pulse 3s infinite; }
+    .focus-ring::after { content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 50%; }
+
+    /* 데이터 대시보드 */
+    .data-card { margin-top: 40px; background: var(--glass); backdrop-filter: blur(10px); padding: 20px 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+    
+    /* 하단 버튼 바 */
+    .nav-bar { padding: 30px; display: flex; justify-content: center; gap: 20px; }
+    .btn { background: var(--glass); border: 1px solid var(--primary); color: var(--primary); padding: 12px 30px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; }
+    .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+
+    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="lang-selector">
-        <button class="lang-btn active" onclick="setLang('ko')">한국어</button>
-        <button class="lang-btn" onclick="setLang('en')">English</button>
-        <button class="lang-btn" onclick="setLang('zh')">中文</button>
-        <button class="lang-btn" onclick="setLang('ar')">العربية</button>
-        <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
-        <button class="lang-btn" onclick="setLang('es')">Español</button>
-        <button class="lang-btn" onclick="setLang('pt')">Português</button>
-        <button class="lang-btn" onclick="setLang('uk')">Українська</button>
-        <button class="lang-btn" onclick="setLang('ja')">日本語</button>
-        <button class="lang-btn" onclick="setLang('ru')">Русский</button>
-    </div>
+<div class="header">
+  <div class="title" id="txt-title">HK GLASS OS</div>
+  <select class="lang-select" onchange="updateUI(this.value)">
+    <option value="ko">🇰🇷 한국어</option>
+    <option value="en">🇺🇸 English</option>
+    <option value="zh">🇨🇳 中文</option>
+    <option value="ar">🇸🇦 العربية</option>
+    <option value="hi">🇮🇳 हिन्दी</option>
+    <option value="es">🇪🇸 Español</option>
+    <option value="pt">🇧🇷 Português</option>
+    <option value="uk">🇺🇦 Українська</option>
+    <option value="ja">🇯🇵 日本語</option>
+    <option value="ru">🇷🇺 Русский</option>
+    <option value="vi">🇻🇳 Tiếng Việt</option>
+    <option value="th">🇹🇭 ภาษาไทย</option>
+    <option value="id">🇮🇩 Indonesia</option>
+    <option value="ps">🇵🇸 فلسطين</option>
+    <option value="de">🇩🇪 Deutsch</option>
+    <option value="it">🇮🇹 Italiano</option>
+    <option value="fr">🇫🇷 Français</option>
+  </select>
+</div>
 
-    <header class="animate">
-        <h1 id="main-title">UAM 혁신</h1>
-        <p class="subtitle" id="main-desc">도시의 경계를 넘어, 하늘을 자유롭게 연결하는 차세대 에어 모빌리티 솔루션입니다.</p>
-    </header>
+<div class="hud-main">
+  <div class="focus-ring"></div>
+  <div class="data-card">
+    <h2 id="txt-monitor">SYSTEM READY</h2>
+    <p id="txt-status">Neural Link: Stable</p>
+  </div>
+</div>
 
-    <div class="grid animate" style="animation-delay: 0.2s;">
-        <div class="card">
-            <span class="icon">🚀</span>
-            <h3 id="f1-t">eVTOL 항공기</h3>
-            <p id="f1-d">수직 이착륙 기술로 활주로 없는 도심 핵심부로의 정밀한 이동을 실현합니다.</p>
-        </div>
-        <div class="card">
-            <span class="icon">🌿</span>
-            <h3 id="f2-t">무공해 이동</h3>
-            <p id="f2-d">100% 전기 추진 시스템을 사용하여 소음과 탄소 배출 없는 친환경 미래를 만듭니다.</p>
-        </div>
-        <div class="card">
-            <span class="icon">⚡</span>
-            <h3 id="f3-t">초고속 연결</h3>
-            <p id="f3-d">교통 체증 없는 하늘 길을 통해 도심 내 이동 시간을 최대 70% 단축합니다.</p>
-        </div>
-        <div class="card">
-            <span class="icon">🏙️</span>
-            <h3 id="f4-t">스마트 시티 연동</h3>
-            <p id="f4-d">AI 기반 통합 관제 시스템으로 지상 교통수단과 완벽하게 연결됩니다.</p>
-        </div>
-    </div>
+<div class="nav-bar">
+  <button class="btn" id="btn-nav">NAVIGATE</button>
+  <button class="btn" id="btn-robot">ROBOT</button>
+  <button class="btn" id="btn-call">CONNECT</button>
 </div>
 
 <script>
-    const content = {
-        ko: { title: "UAM 혁신", desc: "도시의 경계를 넘어, 하늘을 자유롭게 연결하는 차세대 에어 모빌리티 솔루션입니다.", f1t: "eVTOL 항공기", f1d: "수직 이착륙 기술로 활주로 없는 도심 이동을 실현합니다.", f2t: "무공해 이동", f2d: "전기 추진 시스템으로 탄소 배출 없는 친환경 미래를 만듭니다.", f3t: "초고속 연결", f3d: "교통 체증 없는 하늘 길로 이동 시간을 획기적으로 단축합니다.", f4t: "스마트 시티 연동", f4d: "AI 관제 시스템으로 지상 교통과 완벽하게 연결됩니다." },
-        en: { title: "UAM Innovation", desc: "Next-gen air mobility solution connecting cities freely beyond boundaries.", f1t: "eVTOL Aircraft", f1d: "Vertical takeoff and landing technology for seamless urban travel.", f2t: "Zero Emission", f2d: "Eco-friendly future with 100% electric propulsion systems.", f3t: "Ultra-Fast", f3d: "Reducing travel time by up to 70% through traffic-free skyways.", f4t: "Smart City Link", f4d: "Perfect integration with ground transport via AI control." },
-        zh: { title: "UAM 创新", desc: "超越城市边界，自由连接天空的下一代空中交通解决方案。", f1t: "eVTOL 飞行器", f1d: "垂直起降技术，实现在没有跑道的城市中心精准移动。", f2t: "零排放出行", f2d: "采用纯电动力系统，打造无噪音、无碳排的环保未来。", f3t: "超高速连接", f3d: "通过无拥堵的天空航路，将城市通勤时间缩短 70%。", f4t: "智慧城市联动", f4d: "基于 AI 的综合管制系统，与地面交通完美衔接。" },
-        ar: { title: "ابتكار UAM", desc: "حلول التنقل الجوي من الجيل القادم التي تربط المدن بحرية.", f1t: "طائرات eVTOL", f1d: "تقنية الإقلاع والهبوط العمودي للتنقل الحضري الدقيق.", f2t: "نقل خالي من الانبعاثات", f2d: "مستقبل صديق للبيئة مع أنظمة دفع كهربائية بالكامل.", f3t: "اتصال فائق السرعة", f3d: "تقليل وقت السفر بنسبة 70٪ عبر الممرات الجوية.", f4t: "ربط المدينة الذكية", f4d: "تكامل مثالي مع وسائل النقل الأرضي عبر نظام AI." },
-        hi: { title: "UAM नवाचार", desc: "सीमाओं से परे शहरों को जोड़ने वाला अगली पीढ़ी का एयर मोबिलिटी समाधान।", f1t: "eVTOL विमान", f1d: "बिना रनवे के शहरी आवाजाही के लिए वर्टिकल टेकऑफ़ तकनीक।", f2t: "शून्य उत्सर्जन", f2d: "इलेक्ट्रिक प्रोपल्शन सिस्टम के साथ पर्यावरण के अनुकूल भविष्य।", f3t: "अल्ट्रा-फास्ट कनेक्ट", f3d: "ट्रैफिक-मुक्त हवाई मार्गों से यात्रा के समय में 70% की कमी।", f4t: "स्मार्ट सिटी इंटीग्रेशन", f4d: "AI सिस्टम के माध्यम से जमीनी परिवहन के साथ पूर्ण समन्वय।" },
-        es: { title: "Innovación UAM", desc: "Solución de movilidad aérea de próxima generación que conecta ciudades sin límites.", f1t: "Aeronave eVTOL", f1d: "Tecnología de despegue vertical para movilidad urbana sin pistas.", f2t: "Cero Emisiones", f2d: "Futuro ecológico con sistemas de propulsión 100% eléctricos.", f3t: "Conexión Ultra Rápida", f3d: "Reduce el tiempo de viaje hasta un 70% por rutas aéreas.", f4t: "Smart City Link", f4d: "Integración perfecta con el transporte terrestre mediante IA." },
-        pt: { title: "Inovação UAM", desc: "Solução de mobilidade aérea de última geração conectando cidades além das fronteiras.", f1t: "Aeronave eVTOL", f1d: "Tecnologia de decolagem vertical para mobilidade urbana precisa.", f2t: "Emissão Zero", f2d: "Futuro sustentável com sistemas de propulsão elétrica.", f3t: "Conexão Ultrarrápida", f3d: "Redução de até 70% no tempo de viagem pelas vias aéreas.", f4t: "Integração Smart City", f4d: "Conexão perfeita com transporte terrestre via sistema IA." },
-        uk: { title: "Інновації UAM", desc: "Рішення аеромобільності нового покоління, що вільно з’єднує міста.", f1t: "Літак eVTOL", f1d: "Технологія вертикального зльоту для міських подорожей без смуг.", f2t: "Нульові викиди", f2d: "Екологічне майбутнє з електричними системами тяги.", f3t: "Надшвидке сполучення", f3d: "Скорочення часу в дорозі до 70% через повітряні шляхи.", f4t: "Smart City Link", f4d: "Ідеальна інтеграція з наземним транспортом через ШІ." },
-        ja: { title: "UAM イノベーション", desc: "境界を越え、空で都市を自由につなぐ次世代エアモビリティ。", f1t: "eVTOL 航空機", f1d: "垂直離着陸技術により、滑走路のない都心移動を実現します。", f2t: "ゼロエミッション", f2d: "100%電気推進システムで、カーボンニュートラルな未来へ。", f3t: "超高速接続", f3d: "渋滞のない空路により、移動時間を最大70%短縮します。", f4t: "スマートシティ連携", f4d: "AI管制システムで地上交通と完璧にリンクします。" },
-        ru: { title: "Инновации UAM", desc: "Решения аэромобильности нового поколения для связи городов.", f1t: "Аппарат eVTOL", f1d: "Технология вертикального взлета для полетов в центре города.", f2t: "Нулевые выбросы", f2d: "Экологичное будущее с электрическими двигателями.", f3t: "Сверхскорость", f3d: "Сокращение времени в пути на 70% благодаря небу без пробок.", f4t: "Связь со Smart City", f4d: "Полная интеграция с наземным транспортом через ИИ." }
-    };
+  const data = {
+    ko: { title: "HK 글래스 OS", monitor: "시스템 가동 중", status: "뉴럴 링크: 안정적", nav: "항로 탐색", rbt: "로봇 제어", call: "연결" },
+    en: { title: "HK GLASS OS", monitor: "SYSTEM READY", status: "Neural Link: Stable", nav: "NAVIGATE", rbt: "ROBOT", call: "CONNECT" },
+    zh: { title: "HK 玻璃 OS", monitor: "系统就绪", status: "神经链接: 稳定", nav: "导航", rbt: "机器人", call: "连接" },
+    ar: { title: "HK GLASS OS", monitor: "النظام جاهز", status: "الرابط العصبي: مستقر", nav: "الملاحة", rbt: "روبوت", call: "اتصال" },
+    hi: { title: "HK GLASS OS", monitor: "सिस्टम तैयार", status: "न्यूरल लिंक: स्थिर", nav: "नेविगेट", rbt: "रोबोट", call: "कनेक्ट" },
+    es: { title: "HK GLASS OS", monitor: "SISTEMA LISTO", status: "Enlace Neural: Estable", nav: "NAVEGAR", rbt: "ROBOT", call: "CONECTAR" },
+    pt: { title: "HK GLASS OS", monitor: "SISTEMA PRONTO", status: "Link Neural: Estável", nav: "NAVEGAR", rbt: "ROBÔ", call: "CONECTAR" },
+    uk: { title: "HK GLASS OS", monitor: "СИСТЕМА ГОТОВА", status: "Нейронний зв'язок: Стабільний", nav: "НАВІГАЦІЯ", rbt: "РОБОТ", call: "ПІДКЛЮЧИТИ" },
+    ja: { title: "HK ガラス OS", monitor: "システム準備完了", status: "ニューラルリンク: 安定", nav: "ナビ", rbt: "ロボット", call: "接続" },
+    ru: { title: "HK GLASS OS", monitor: "СИСТЕМА ГОТОВА", status: "Нейросеть: Стабильна", nav: "НАВИГАЦИЯ", rbt: "РОБОТ", call: "ПОДКЛЮЧИТЬ" },
+    vi: { title: "HK GLASS OS", monitor: "HỆ THỐNG SẴN SÀNG", status: "Liên kết thần kinh: Ổn định", nav: "ĐỊNH VỊ", rbt: "ROBOT", call: "KẾT NỐI" },
+    th: { title: "HK GLASS OS", monitor: "ระบบพร้อม", status: "การเชื่อมต่อทางประสาท: เสถียร", nav: "นำทาง", rbt: "หุ่นยนต์", call: "เชื่อมต่อ" },
+    id: { title: "HK GLASS OS", monitor: "SISTEM SIAP", status: "Link Neural: Stabil", nav: "NAVIGASI", rbt: "ROBOT", call: "KONEKSI" },
+    ps: { title: "HK GLASS OS", monitor: "سیسټم چمتو دی", status: "عصبي لینک: ثابت", nav: "نویګیشن", rbt: "روبوټ", call: "وصلول" },
+    de: { title: "HK GLASS OS", monitor: "SYSTEM BEREIT", status: "Neuronale Verbindung: Stabil", nav: "NAVIGIEREN", rbt: "ROBOTER", call: "VERBINDEN" },
+    it: { title: "HK GLASS OS", monitor: "SISTEMA PRONTO", status: "Link Neurale: Stabile", nav: "NAVIGAZIONE", rbt: "ROBOT", call: "CONNETTI" },
+    fr: { title: "HK GLASS OS", monitor: "SYSTÈME PRÊT", status: "Lien Neuronal: Stable", nav: "NAVIGUER", rbt: "ROBOT", call: "CONNECTER" }
+  };
 
-    function setLang(lang) {
-        document.getElementById('main-title').innerText = content[lang].title;
-        document.getElementById('main-desc').innerText = content[lang].desc;
-        document.getElementById('f1-t').innerText = content[lang].f1t;
-        document.getElementById('f1-d').innerText = content[lang].f1d;
-        document.getElementById('f2-t').innerText = content[lang].f2t;
-        document.getElementById('f2-d').innerText = content[lang].f2d;
-        document.getElementById('f3-t').innerText = content[lang].f3t;
-        document.getElementById('f3-d').innerText = content[lang].f3d;
-        document.getElementById('f4-t').innerText = content[lang].f4t;
-        document.getElementById('f4-d').innerText = content[lang].f4d;
-        
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-    }
+  function updateUI(lang) {
+    const d = data[lang];
+    document.getElementById('txt-title').innerText = d.title;
+    document.getElementById('txt-monitor').innerText = d.monitor;
+    document.getElementById('txt-status').innerText = d.status;
+    document.getElementById('btn-nav').innerText = d.nav;
+    document.getElementById('btn-robot').innerText = d.rbt;
+    document.getElementById('btn-call').innerText = d.call;
+  }
 </script>
-    <section style="margin-top: 80px; padding: 40px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
-        <h2 id="contact-title" style="font-size: 1.8rem; margin-bottom: 15px;">Contact Us</h2>
-        <a href="mailto:Info@hkuam.com" style="font-size: 1.4rem; color: #3a86ff; text-decoration: none; font-weight: bold; border-bottom: 2px solid #3a86ff; padding-bottom: 5px;">
-            Info@hkuam.com
-        </a>
-        <p id="contact-desc" style="margin-top: 20px; color: #a0a0c0; font-size: 0.9rem;">글로벌 UAM 네트워크의 중심, HK Group과 함께하십시오.</p>
-    </section>
 </body>
 </html>
