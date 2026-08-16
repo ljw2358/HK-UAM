@@ -2,41 +2,44 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>HK Glass OS | Elite HUD</title>
+  <title>HK UAM Command Center</title>
   <style>
-    :root { --primary: #38bdf8; --bg: #050a14; --glass: rgba(255, 255, 255, 0.05); }
-    body { background: var(--bg); color: #fff; margin: 0; font-family: 'Inter', -apple-system, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    :root { --green: #10b981; --bg: #030712; --panel: rgba(15, 23, 42, 0.8); }
+    body { background: var(--bg); color: #fff; margin: 0; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; }
 
-    /* 글래스 모피즘 헤더 */
-    .header { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(56, 189, 248, 0.2); }
-    .title { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
+    /* 헤더 */
+    header { padding: 15px 30px; background: #0b1329; border-bottom: 2px solid var(--green); display: flex; justify-content: space-between; align-items: center; }
+    .title { font-size: 22px; font-weight: 900; color: var(--green); letter-spacing: 2px; }
 
-    /* 고급 언어 선택창 */
-    .lang-select { background: rgba(0,0,0,0.6); border: 1px solid var(--primary); color: #fff; padding: 8px 15px; border-radius: 20px; outline: none; cursor: pointer; }
-
-    /* 메인 HUD 영역 */
-    .hud-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    /* 관제탑 비대칭 레이아웃 */
+    .command-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 20px; height: calc(100vh - 80px); box-sizing: border-box; }
     
-    /* 중앙 포커스 포인트 */
-    .focus-ring { width: 150px; height: 150px; border: 2px solid var(--primary); border-radius: 50%; position: relative; animation: pulse 3s infinite; }
-    .focus-ring::after { content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 50%; }
-
-    /* 데이터 대시보드 */
-    .data-card { margin-top: 40px; background: var(--glass); backdrop-filter: blur(10px); padding: 20px 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+    /* 레이더 스코프 메인 관제판 */
+    .radar-panel { background: var(--panel); border: 1px solid var(--green); border-radius: 12px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
     
-    /* 하단 버튼 바 */
-    .nav-bar { padding: 30px; display: flex; justify-content: center; gap: 20px; }
-    .btn { background: var(--glass); border: 1px solid var(--primary); color: var(--primary); padding: 12px 30px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; }
-    .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+    /* 레이더 회전 빔 시뮬레이션 */
+    .radar-scope { width: 320px; height: 320px; border: 2px dashed var(--green); border-radius: 50%; position: relative; }
+    .radar-scope::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .radar-sweep { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, transparent 300deg, rgba(16, 185, 129, 0.4) 360deg); animation: sweep 3s linear infinite; }
+    
+    /* 레이더 상의 UAM 기체 점 */
+    .uam-blip { position: absolute; top: 35%; left: 60%; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 10px #ef4444; animation: blink 1s infinite; }
 
-    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
+    /* 우측 비행 텔레메트리 데이터 */
+    .telemetry-panel { background: var(--panel); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+    .data-box { background: rgba(0,0,0,0.5); padding: 15px; border-left: 4px solid var(--green); }
+    .data-box div { font-size: 12px; color: #9ca3af; }
+    .data-box h2 { margin: 5px 0 0 0; font-size: 24px; color: var(--green); }
+
+    @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
   </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="title" id="txt-title">HK GLASS OS</div>
-  <select class="lang-select" onchange="updateUI(this.value)">
+<header>
+  <div class="title" id="txt-head">HK UAM COMMAND TOWER</div>
+  <select id="langSelect" onchange="updateUI(this.value)" style="background:#000; color:var(--green); border:1px solid var(--green); padding:6px 12px; border-radius:6px; cursor:pointer;">
     <option value="ko">🇰🇷 한국어</option>
     <option value="en">🇺🇸 English</option>
     <option value="zh">🇨🇳 中文</option>
@@ -55,51 +58,69 @@
     <option value="it">🇮🇹 Italiano</option>
     <option value="fr">🇫🇷 Français</option>
   </select>
-</div>
+</header>
 
-<div class="hud-main">
-  <div class="focus-ring"></div>
-  <div class="data-card">
-    <h2 id="txt-monitor">SYSTEM READY</h2>
-    <p id="txt-status">Neural Link: Stable</p>
+<div class="command-grid">
+  <!-- 메인 레이더 스코프 -->
+  <div class="radar-panel">
+    <div style="position: absolute; top: 15px; left: 15px; font-weight: bold; color: var(--green);" id="txt-radar-title">AIRSPACE RADAR SCOPE</div>
+    <div class="radar-scope">
+      <div class="radar-sweep"></div>
+      <div class="uam-blip"></div>
+    </div>
+    <div style="margin-top: 20px; font-size: 14px;" id="txt-tracking">TARGET TRACKING: HK-AERO 01</div>
+  </div>
+
+  <!-- 비행 텔레메트리 파라미터 -->
+  <div class="telemetry-panel">
+    <div class="data-box">
+      <div id="lbl-alt">FLIGHT ALTITUDE</div>
+      <h2>450 m</h2>
+    </div>
+    <div class="data-box">
+      <div id="lbl-speed">GROUND SPEED</div>
+      <h2>180 km/h</h2>
+    </div>
+    <div class="data-box">
+      <div id="lbl-bat">POWER CELL</div>
+      <h2>92 %</h2>
+    </div>
+    <button style="background: var(--green); color: #000; border: none; padding: 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: auto;" id="btn-land" onclick="alert('자동 착륙 시퀀스 시작')">
+      AUTO LANDING
+    </button>
   </div>
 </div>
 
-<div class="nav-bar">
-  <button class="btn" id="btn-nav">NAVIGATE</button>
-  <button class="btn" id="btn-robot">ROBOT</button>
-  <button class="btn" id="btn-call">CONNECT</button>
-</div>
-
 <script>
-  const data = {
-    ko: { title: "HK 글래스 OS", monitor: "시스템 가동 중", status: "뉴럴 링크: 안정적", nav: "항로 탐색", rbt: "로봇 제어", call: "연결" },
-    en: { title: "HK GLASS OS", monitor: "SYSTEM READY", status: "Neural Link: Stable", nav: "NAVIGATE", rbt: "ROBOT", call: "CONNECT" },
-    zh: { title: "HK 玻璃 OS", monitor: "系统就绪", status: "神经链接: 稳定", nav: "导航", rbt: "机器人", call: "连接" },
-    ar: { title: "HK GLASS OS", monitor: "النظام جاهز", status: "الرابط العصبي: مستقر", nav: "الملاحة", rbt: "روبوت", call: "اتصال" },
-    hi: { title: "HK GLASS OS", monitor: "सिस्टम तैयार", status: "न्यूरल लिंक: स्थिर", nav: "नेविगेट", rbt: "रोबोट", call: "कनेक्ट" },
-    es: { title: "HK GLASS OS", monitor: "SISTEMA LISTO", status: "Enlace Neural: Estable", nav: "NAVEGAR", rbt: "ROBOT", call: "CONECTAR" },
-    pt: { title: "HK GLASS OS", monitor: "SISTEMA PRONTO", status: "Link Neural: Estável", nav: "NAVEGAR", rbt: "ROBÔ", call: "CONECTAR" },
-    uk: { title: "HK GLASS OS", monitor: "СИСТЕМА ГОТОВА", status: "Нейронний зв'язок: Стабільний", nav: "НАВІГАЦІЯ", rbt: "РОБОТ", call: "ПІДКЛЮЧИТИ" },
-    ja: { title: "HK ガラス OS", monitor: "システム準備完了", status: "ニューラルリンク: 安定", nav: "ナビ", rbt: "ロボット", call: "接続" },
-    ru: { title: "HK GLASS OS", monitor: "СИСТЕМА ГОТОВА", status: "Нейросеть: Стабильна", nav: "НАВИГАЦИЯ", rbt: "РОБОТ", call: "ПОДКЛЮЧИТЬ" },
-    vi: { title: "HK GLASS OS", monitor: "HỆ THỐNG SẴN SÀNG", status: "Liên kết thần kinh: Ổn định", nav: "ĐỊNH VỊ", rbt: "ROBOT", call: "KẾT NỐI" },
-    th: { title: "HK GLASS OS", monitor: "ระบบพร้อม", status: "การเชื่อมต่อทางประสาท: เสถียร", nav: "นำทาง", rbt: "หุ่นยนต์", call: "เชื่อมต่อ" },
-    id: { title: "HK GLASS OS", monitor: "SISTEM SIAP", status: "Link Neural: Stabil", nav: "NAVIGASI", rbt: "ROBOT", call: "KONEKSI" },
-    ps: { title: "HK GLASS OS", monitor: "سیسټم چمتو دی", status: "عصبي لینک: ثابت", nav: "نویګیشن", rbt: "روبوټ", call: "وصلول" },
-    de: { title: "HK GLASS OS", monitor: "SYSTEM BEREIT", status: "Neuronale Verbindung: Stabil", nav: "NAVIGIEREN", rbt: "ROBOTER", call: "VERBINDEN" },
-    it: { title: "HK GLASS OS", monitor: "SISTEMA PRONTO", status: "Link Neurale: Stabile", nav: "NAVIGAZIONE", rbt: "ROBOT", call: "CONNETTI" },
-    fr: { title: "HK GLASS OS", monitor: "SYSTÈME PRÊT", status: "Lien Neuronal: Stable", nav: "NAVIGUER", rbt: "ROBOT", call: "CONNECTER" }
+  const i18n = {
+    ko: { head: "HK UAM 관제 센터", radar: "공중 레이더 스코프", track: "타겟 추적: HK-AERO 01", alt: "비행 고도", speed: "운항 속도", bat: "배터리 잔량", land: "자동 착륙 시작" },
+    en: { head: "HK UAM COMMAND TOWER", radar: "AIRSPACE RADAR SCOPE", track: "TARGET TRACKING: HK-AERO 01", alt: "FLIGHT ALTITUDE", speed: "GROUND SPEED", bat: "POWER CELL", land: "AUTO LANDING" },
+    zh: { head: "HK UAM 管制中心", radar: "空域雷达屏幕", track: "目标追踪: HK-AERO 01", alt: "飞行高度", speed: "地面速度", bat: "电池电量", land: "自动降落" },
+    ar: { head: "HK UAM مركز التحكم", radar: "شاشة الرادار الجوي", track: "تتبع الهدف: HK-AERO 01", alt: "ارتفاع الطيران", speed: "السرعة الأرضية", bat: "بطارية", land: "هبوط تلقائي" },
+    hi: { head: "HK UAM कमांड सेंटर", radar: "एयरस्पेस रडार स्कोप", track: "लक्ष्य ट्रैकिंग: HK-AERO 01", alt: "उड़ान की ऊंचाई", speed: "जमीनी गति", bat: "पावर सेल", land: "ऑटो लैंडिंग" },
+    es: { head: "TORRE DE CONTROL HK UAM", radar: "RADAR ESPACIO AÉREO", track: "SEGUIMIENTO: HK-AERO 01", alt: "ALTITUD DE VUELO", speed: "VELOCIDAD", bat: "BATERÍA", land: "ATERRIZAJE AUT." },
+    pt: { head: "TORRE DE CONTROLE HK UAM", radar: "RADAR ESPAÇO AÉREO", track: "RASTREAMENTO: HK-AERO 01", alt: "ALTITUDE DE VOO", speed: "VELOCIDADE", bat: "BATERIA", land: "POUSO AUTOMÁTICO" },
+    uk: { head: "ЦЕНТР КЕРУВАННЯ HK UAM", radar: "РАДАР ПОВІТРЯНОГО ПРОСТОРУ", track: "ВІДСТЕЖЕННЯ: HK-AERO 01", alt: "ВИСОТА ПОЛЬОТУ", speed: "ШВИДКІСТЬ", bat: "БАТАРЕЯ", land: "АВТОПОСАДКА" },
+    ja: { head: "HK UAM 管制センター", radar: "上空レーダース코ープ", track: "ターゲット追跡: HK-AERO 01", alt: "高度", speed: "速度", bat: "バッテリー", land: "自动着陆" },
+    ru: { head: "ЦЕНТР УПРАВЛЕНИЯ HK UAM", radar: "РАДАР ВОЗДУШНОГО ПРОСТРАНСТВА", track: "СЛЕЖЕНИЕ: HK-AERO 01", alt: "ВЫСОТА ПОЛЕТА", speed: "СКОРОСТЬ", bat: "БАТАРЕЯ", land: "АВТОПОСАДКА" },
+    vi: { head: "TRUNG TÂM ĐIỀU HÀNH HK UAM", radar: "MÀN HÌNH RADAR KHÔNG TRUNG", track: "THEO DÕI: HK-AERO 01", alt: "ĐỘ CAO BAY", speed: "TỐC ĐỘ", bat: "PIN", land: "HẠ CÁNH TỰ ĐỘNG" },
+    th: { head: "ศูนย์ควบคุม HK UAM", radar: "เรดาร์น่านฟ้า", track: "ติดตามเป้าหมาย: HK-AERO 01", alt: "ความสูงการบิน", speed: "ความเร็ว", bat: "แบตเตอรี่", land: "ลงจอดอัตโนมัติ" },
+    id: { head: "PUSAT KONTROL HK UAM", radar: "RADAR RUANG UDARA", track: "PELACAKAN: HK-AERO 01", alt: "KETINGGIAN TERBANG", speed: "KECEPATAN", bat: "BATERAI", land: "PENDARATAN OTOMATIS" },
+    ps: { head: "HK UAM د قوماندې مرکز", radar: "فضایی رادار سکوپ", track: "هدف تعقیب: HK-AERO 01", alt: "د پرواز لوړوالی", speed: "سرعت", bat: "بیټرۍ", land: "خودکار کښیناستل" },
+    de: { head: "HK UAM KONTROLLZENTRUM", radar: "LUFTRUM-RADAR", track: "ZIELVERFOLGUNG: HK-AERO 01", alt: "FLUGHÖHE", speed: "GESCHWINDIGKEIT", bat: "AKKU", land: "AUTO-LANDUNG" },
+    it: { head: "CENTRO DI COMANDO HK UAM", radar: "RADAR SPAZIO AEREO", track: "TRACCIAMENTO: HK-AERO 01", alt: "ALTITUDINE DI VOLO", speed: "VELOCITÀ", bat: "BATTERIA", land: "ATTERRAGGIO AUTO" },
+    fr: { head: "CENTRE DE COMMANDEMENT HK UAM", radar: "RADAR ESPACE AÉRIEN", track: "SUIVI CIBLE: HK-AERO 01", alt: "ALTITUDE DE VOL", speed: "VITESSE", bat: "BATTERIE", land: "ATTERRISSAGE AUTO" }
   };
 
   function updateUI(lang) {
-    const d = data[lang];
-    document.getElementById('txt-title').innerText = d.title;
-    document.getElementById('txt-monitor').innerText = d.monitor;
-    document.getElementById('txt-status').innerText = d.status;
-    document.getElementById('btn-nav').innerText = d.nav;
-    document.getElementById('btn-robot').innerText = d.rbt;
-    document.getElementById('btn-call').innerText = d.call;
+    const d = i18n[lang];
+    document.getElementById('txt-head').innerText = d.head;
+    document.getElementById('txt-radar-title').innerText = d.radar;
+    document.getElementById('txt-tracking').innerText = d.track;
+    document.getElementById('lbl-alt').innerText = d.alt;
+    document.getElementById('lbl-speed').innerText = d.speed;
+    document.getElementById('lbl-bat').innerText = d.bat;
+    document.getElementById('btn-land').innerText = d.land;
   }
 </script>
 </body>
