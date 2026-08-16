@@ -1,381 +1,413 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HK UAM 관제탑</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="doc-title">HK UAM 관제탑</title>
+    <style>
+        :root {
+            --bg-color: #060913;
+            --card-bg: rgba(15, 23, 42, 0.75);
+            --text-color: #ffffff;
+            --text-secondary: #94a3b8;
+            
+            /* SF 네온 칼라 */
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff007f;
+            --neon-green: #00ff88;
+            --neon-purple: #a855f7;
+            --neon-yellow: #ffcc00;
+        }
 
-    body {
-      background-color: #080f1a;
-      color: #00ffcc;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      padding: 16px;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #1a2f4c;
-      margin-bottom: 16px;
-    }
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 127, 0.08) 0%, transparent 40%);
+            color: var(--text-color);
+            padding: 15px;
+            min-height: 100vh;
+        }
 
-    .brand-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #00ffcc;
-    }
+        /* Header (모바일 깨짐 완벽 방지 반영) */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+        }
 
-    select {
-      background: #0d1b2a;
-      color: #00ffcc;
-      border: 1px solid #00ffcc;
-      padding: 8px 12px;
-      border-radius: 4px;
-      font-size: 0.95rem;
-      outline: none;
-      cursor: pointer;
-    }
+        .header h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            white-space: nowrap;
+        }
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      flex: 1;
-    }
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
 
-    .card {
-      background: #0d1b2a;
-      border: 1px solid #1a3a5c;
-      border-radius: 8px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+        .lang-select {
+            background: #0f172a;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
 
-    .radar-card {
-      align-items: center;
-      min-height: 320px;
-      position: relative;
-    }
+        /* 모바일 반응형 처리 */
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
 
-    .card-title {
-      align-self: flex-start;
-      font-size: 1rem;
-      color: #88a0c0;
-      margin-bottom: 16px;
-      font-weight: 600;
-    }
+            .header h1 {
+                font-size: 1.15rem;
+                width: 100%;
+            }
 
-    .radar-display {
-      width: 200px;
-      height: 200px;
-      border: 2px solid #00ffcc;
-      border-radius: 50%;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle, rgba(0, 255, 204, 0.05) 0%, rgba(0,0,0,0) 70%);
-      margin: 10px 0;
-    }
+            .header-controls {
+                width: 100%;
+                justify-content: flex-end;
+            }
 
-    .target-dot {
-      width: 10px;
-      height: 10px;
-      background-color: #ff3366;
-      border-radius: 50%;
-      position: absolute;
-      top: 40%;
-      right: 35%;
-      box-shadow: 0 0 10px #ff3366;
-    }
+            .lang-select {
+                width: 100%;
+                max-width: 180px;
+            }
+        }
 
-    .tracking-status {
-      font-size: 0.95rem;
-      color: #00ffcc;
-      margin-top: 12px;
-      font-weight: 500;
-    }
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
 
-    .metrics-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+        }
 
-    .metric-card {
-      background: #0d1b2a;
-      border: 1px solid #1a3a5c;
-      border-radius: 8px;
-      padding: 16px 20px;
-    }
+        /* UAM Radar Card */
+        .radar-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+            position: relative;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.15);
+        }
 
-    .metric-label {
-      font-size: 0.95rem;
-      color: #88a0c0;
-      margin-bottom: 6px;
-    }
+        .radar-title {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--neon-green);
+            letter-spacing: 0.5px;
+        }
 
-    .metric-value {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #ffffff;
-    }
+        .radar-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 2px dashed var(--neon-green);
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, rgba(0, 240, 255, 0.05) 50%, rgba(0,0,0,0) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            animation: rotateRadar 12s linear infinite;
+        }
 
-    .metric-unit {
-      font-size: 1.1rem;
-      color: #00ffcc;
-      margin-left: 4px;
-    }
+        @keyframes rotateRadar {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
-    @media (min-width: 768px) {
-      body {
-        padding: 24px;
-      }
+        .radar-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--neon-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink);
+            transform: translate(30px, -20px);
+        }
 
-      .dashboard-grid {
-        grid-template-columns: 2fr 1fr;
-      }
+        .radar-footer {
+            margin-top: 22px;
+            font-size: 0.85rem;
+            color: var(--neon-green);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
 
-      .brand-title {
-        font-size: 1.5rem;
-      }
+        /* Status Cards */
+        .status-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-      .radar-display {
-        width: 260px;
-        height: 260px;
-      }
+        .card-alt {
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+        }
 
-      .metric-value {
-        font-size: 2.5rem;
-      }
-    }
-  </style>
+        .card-speed {
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+        }
+
+        .status-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .val-cyan {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+
+        .val-green {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand-title" data-i18n="headerTitle">HK UAM 관제탑</div>
-    <select id="langSelect" onchange="changeLanguage(this.value)">
-      <option value="ko" selected>한국어</option>
-      <option value="en">English (영어)</option>
-      <option value="zh">中文 (중국어)</option>
-      <option value="ar">العربية (아랍어)</option>
-      <option value="hi">हिन्दी (인도어/힌디어)</option>
-      <option value="es">Español (스페인어)</option>
-      <option value="pt">Português (브라질어)</option>
-      <option value="uk">Українська (우크라이나어)</option>
-      <option value="ja">日本語 (일본어)</option>
-      <option value="ru">Русский (러시아어)</option>
-      <option value="vi">Tiếng Việt (베트남어)</option>
-      <option value="th">ไทย (태국어)</option>
-      <option value="id">Bahasa Indonesia (인도네시아어)</option>
-      <option value="pa">العربية - فلسطين (팔레스타인어)</option>
-      <option value="de">Deutsch (독일어)</option>
-      <option value="it">Italiano (이태리어)</option>
-      <option value="fr">Français (프랑스어)</option>
-    </select>
-  </header>
+    <header class="header">
+        <h1 id="title">HK UAM 관제탑</h1>
+        <div class="header-controls">
+            <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
+                <option value="ko" selected>한국어 (KR)</option>
+                <option value="en">English (US)</option>
+                <option value="zh">中文 (CN)</option>
+                <option value="ar">العربية (AR)</option>
+                <option value="hi">हिन्दी (IN)</option>
+                <option value="es">Español (ES)</option>
+                <option value="pt_br">Português (BR)</option>
+                <option value="uk">Українська (UA)</option>
+                <option value="ja">日本語 (JP)</option>
+                <option value="ru">Русский (RU)</option>
+                <option value="vi">Tiếng Việt (VN)</option>
+                <option value="th">ไทย (TH)</option>
+                <option value="id">Bahasa Indonesia (ID)</option>
+                <option value="ar_ps">العربية (PS)</option>
+                <option value="de">Deutsch (DE)</option>
+                <option value="it">Italiano (IT)</option>
+                <option value="fr">Français (FR)</option>
+            </select>
+        </div>
+    </header>
 
-  <main class="dashboard-grid">
-    <section class="card radar-card">
-      <div class="card-title" data-i18n="radarTitle">공중 레이더 스코프</div>
-      <div class="radar-display">
-        <div class="target-dot"></div>
-      </div>
-      <div class="tracking-status">
-        <span data-i18n="targetLabel">표적 추적 중:</span> <strong>HK-AERO-01</strong>
-      </div>
-    </section>
+    <main class="dashboard-grid">
+        <section class="card radar-card">
+            <div class="radar-title" id="radar-title">공중 레이더 스코프</div>
+            <div class="radar-circle">
+                <div class="radar-dot"></div>
+            </div>
+            <div class="radar-footer" id="radar-footer">표적 추적 중: HK-AERO-01</div>
+        </section>
 
-    <section class="metrics-container">
-      <div class="metric-card">
-        <div class="metric-label" data-i18n="altitude">비행 고도</div>
-        <div class="metric-value">450 <span class="metric-unit">m</span></div>
-      </div>
+        <section class="status-card card-alt">
+            <div class="status-label" id="lbl-alt">비행 고도</div>
+            <div class="status-value">
+                <span id="val-altitude">450</span> 
+                <span class="val-green" style="font-size:1rem;">m</span>
+            </div>
+        </section>
 
-      <div class="metric-card">
-        <div class="metric-label" data-i18n="speed">대지 속도</div>
-        <div class="metric-value">180 <span class="metric-unit">km/h</span></div>
-      </div>
+        <section class="status-card card-speed">
+            <div class="status-label" id="lbl-speed">대지 속도</div>
+            <div class="status-value">
+                <span id="val-speed">180</span> 
+                <span class="val-cyan" style="font-size:1rem;">km/h</span>
+            </div>
+        </section>
+    </main>
 
-      <div class="metric-card">
-        <div class="metric-label" data-i18n="power">배터리 잔량</div>
-        <div class="metric-value">92 <span class="metric-unit">%</span></div>
-      </div>
-    </section>
-  </main>
+    <script>
+        const translations = {
+            ko: {
+                title: "HK UAM 관제탑",
+                radarTitle: "공중 레이더 스코프",
+                radarFooter: "표적 추적 중: HK-AERO-01",
+                lblAlt: "비행 고도",
+                lblSpeed: "대지 속도"
+            },
+            en: {
+                title: "HK UAM Control Tower",
+                radarTitle: "Air Radar Scope",
+                radarFooter: "Tracking Target: HK-AERO-01",
+                lblAlt: "Flight Altitude",
+                lblSpeed: "Ground Speed"
+            },
+            zh: {
+                title: "HK UAM 管制塔",
+                radarTitle: "空中雷达显示屏",
+                radarFooter: "目标追踪中: HK-AERO-01",
+                lblAlt: "飞行高度",
+                lblSpeed: "地速"
+            },
+            ar: {
+                title: "برج مراقبة HK UAM",
+                radarTitle: "نطاق الرادار الجوي",
+                radarFooter: "جاري تتبع الهدف: HK-AERO-01",
+                lblAlt: "ارتفاع الطيران",
+                lblSpeed: "السرعة الأرضية"
+            },
+            hi: {
+                title: "HK UAM कंट्रोल टावर",
+                radarTitle: "हवाई रडार स्कोप",
+                radarFooter: "लक्ष्य ट्रैकिंग: HK-AERO-01",
+                lblAlt: "उड़ान की ऊंचाई",
+                lblSpeed: "ग्राउंड स्पीड"
+            },
+            es: {
+                title: "Torre de Control HK UAM",
+                radarTitle: "Alcance del Radar Aéreo",
+                radarFooter: "Rastreando Objetivo: HK-AERO-01",
+                lblAlt: "Altitud de Vuelo",
+                lblSpeed: "Velocidad con Respecto al Suelo"
+            },
+            pt_br: {
+                title: "Torre de Controle HK UAM",
+                radarTitle: "Alcance do Radar Aéreo",
+                radarFooter: "Rastreando Alvo: HK-AERO-01",
+                lblAlt: "Altitude de Voo",
+                lblSpeed: "Velocidade em Relação ao Solo"
+            },
+            uk: {
+                title: "Диспетчерська вежа HK UAM",
+                radarTitle: "Повітряний радарний скоп",
+                radarFooter: "Відстеження цілі: HK-AERO-01",
+                lblAlt: "Висота польоту",
+                lblSpeed: "Шляхова швидкість"
+            },
+            ja: {
+                title: "HK UAM 管制塔",
+                radarTitle: "空中レーダースコープ",
+                radarFooter: "ターゲット追跡中: HK-AERO-01",
+                lblAlt: "飛行高度",
+                lblSpeed: "対地速度"
+            },
+            ru: {
+                title: "Диспетчерская вышка HK UAM",
+                radarTitle: "Воздушный радарный скоп",
+                radarFooter: "Отслеживание цели: HK-AERO-01",
+                lblAlt: "Высота полета",
+                lblSpeed: "Путевая скорость"
+            },
+            vi: {
+                title: "Đài kiểm soát HK UAM",
+                radarTitle: "Phạm vi Radar trên không",
+                radarFooter: "Đang theo dõi mục tiêu: HK-AERO-01",
+                lblAlt: "Độ cao bay",
+                lblSpeed: "Tốc độ mặt đất"
+            },
+            th: {
+                title: "หอควบคุม HK UAM",
+                radarTitle: "ขอบเขตเรดาร์ทางอากาศ",
+                radarFooter: "กำลังติดตามเป้าหมาย: HK-AERO-01",
+                lblAlt: "ความสูงการบิน",
+                lblSpeed: "ความเร็วภาคพื้นดิน"
+            },
+            id: {
+                title: "Menara Kontrol HK UAM",
+                radarTitle: "Cakupan Radar Udara",
+                radarFooter: "Lacak Target: HK-AERO-01",
+                lblAlt: "Ketinggian Penerbangan",
+                lblSpeed: "Kecepatan Darat"
+            },
+            ar_ps: {
+                title: "برج مراقبة HK UAM",
+                radarTitle: "نطاق الرادار الجوي",
+                radarFooter: "تتبع الهدف: HK-AERO-01",
+                lblAlt: "ارتفاع الطيران",
+                lblSpeed: "السرعة الأرضية"
+            },
+            de: {
+                title: "HK UAM Kontrollturm",
+                radarTitle: "Luftradarskop",
+                radarFooter: "Zielverfolgung: HK-AERO-01",
+                lblAlt: "Flughöhe",
+                lblSpeed: "Geschwindigkeit über Grund"
+            },
+            it: {
+                title: "Torre di Controllo HK UAM",
+                radarTitle: "Ambito Radar Aereo",
+                radarFooter: "Tracciamento Bersaglio: HK-AERO-01",
+                lblAlt: "Altitudine di Volo",
+                lblSpeed: "Velocità al Suolo"
+            },
+            fr: {
+                title: "Tour de Contrôle HK UAM",
+                radarTitle: "Portée Radar Aérien",
+                radarFooter: "Suivi de la Cible: HK-AERO-01",
+                lblAlt: "Altitude de Vol",
+                lblSpeed: "Vitesse Sol"
+            }
+        };
 
-  <script>
-    const translations = {
-      ko: {
-        headerTitle: "HK UAM 관제탑",
-        radarTitle: "공중 레이더 스코프",
-        targetLabel: "표적 추적 중:",
-        altitude: "비행 고도",
-        speed: "대지 속도",
-        power: "배터리 잔량"
-      },
-      en: {
-        headerTitle: "HK UAM COMMAND TOWER",
-        radarTitle: "AIRSPACE RADAR SCOPE",
-        targetLabel: "TARGET TRACKING:",
-        altitude: "FLIGHT ALTITUDE",
-        speed: "GROUND SPEED",
-        power: "POWER CELL"
-      },
-      zh: {
-        headerTitle: "HK UAM 控制塔",
-        radarTitle: "空域雷达屏幕",
-        targetLabel: "目标追踪中:",
-        altitude: "飞行高度",
-        speed: "地速",
-        power: "剩余电量"
-      },
-      ar: {
-        headerTitle: "برج مراقبة HK UAM",
-        radarTitle: "رادار المجال الجوي",
-        targetLabel: "تتبع الهدف:",
-        altitude: "ارتفاع الطيران",
-        speed: "السرعة الأرضية",
-        power: "طاقة البطارية"
-      },
-      hi: {
-        headerTitle: "HK UAM नियंत्रण टॉवर",
-        radarTitle: "हवाई क्षेत्र राडार स्कोप",
-        targetLabel: "लक्ष्य ट्रैकिंग:",
-        altitude: "उड़ान की ऊंचाई",
-        speed: "जमीनी गति",
-        power: "बैटरी पावर"
-      },
-      es: {
-        headerTitle: "TORRE DE CONTROL HK UAM",
-        radarTitle: "RADAR ESPACIO AÉREO",
-        targetLabel: "RASTREANDO OBJETIVO:",
-        altitude: "ALTITUD DE VUELO",
-        speed: "VELOCIDAD TERRESTRE",
-        power: "BATERÍA RESTANTE"
-      },
-      pt: {
-        headerTitle: "TORRE DE CONTROLE HK UAM",
-        radarTitle: "RADAR DE ESPAÇO AÉREO",
-        targetLabel: "RASTREAMENTO DE ALVO:",
-        altitude: "ALTITUDE DE VOO",
-        speed: "VELOCIDADE EM SOLO",
-        power: "NÍVEL DA BATERIA"
-      },
-      uk: {
-        headerTitle: "ДИСПЕТЧЕРСЬКА ВЕЖА HK UAM",
-        radarTitle: "РАДАР ПОВІТРЯНОГО ПРОСТОРУ",
-        targetLabel: "ВІДСТЕЖЕННЯ ЦІЛІ:",
-        altitude: "ВІСОТА ПОЛЬОТУ",
-        speed: "ШВИДКІСТЬ ВІДНОСНО ЗЕМЛІ",
-        power: "ЗАРЯД БАТАРЕЇ"
-      },
-      ja: {
-        headerTitle: "HK UAM 管制塔",
-        radarTitle: "上空レーダースコープ",
-        targetLabel: "目標追跡中:",
-        altitude: "飛行高度",
-        speed: "対地速度",
-        power: "バッテリー残量"
-      },
-      ru: {
-        headerTitle: "ДИСПЕТЧЕРСКАЯ ВЫШКА HK UAM",
-        radarTitle: "РАДАР ВОЗДУШНОГО ПРОСТРАНСТВА",
-        targetLabel: "ОТСЛЕЖИВАНИЕ ЦЕЛИ:",
-        altitude: "ВЫСОТА ПОЛЕТА",
-        speed: "ПУТЕВАЯ СКОРОСТЬ",
-        power: "ЗАРЯД БАТАРЕИ"
-      },
-      vi: {
-        headerTitle: "THÁP ĐIỀU KHIỂN HK UAM",
-        radarTitle: "RADA KHÔNG PHẬN",
-        targetLabel: "ĐANG THEO DÕI MỤC TIÊU:",
-        altitude: "ĐỘ CAO BAY",
-        speed: "TỐC ĐỘ MẶT ĐẤT",
-        power: "DUNG LƯỢNG PIN"
-      },
-      th: {
-        headerTitle: "หอบังคับการ HK UAM",
-        radarTitle: "เรดาร์น่านฟ้า",
-        targetLabel: "กำลังติดตามเป้าหมาย:",
-        altitude: "ความสูงการบิน",
-        speed: "ความเร็วภาคพื้นดิน",
-        power: "แบตเตอรี่คงเหลือ"
-      },
-      id: {
-        headerTitle: "MENARA KONTROL HK UAM",
-        radarTitle: "RADAR RUANG UDARA",
-        targetLabel: "PELACAKAN TARGET:",
-        altitude: "KETINGGIAN TERBANG",
-        speed: "KECEPATAN DARAT",
-        power: "DAYA BATERAI"
-      },
-      pa: {
-        headerTitle: "برج مراقبة HK UAM - فلسطين",
-        radarTitle: "رادار المجال الجوي",
-        targetLabel: "تتبع الهدف:",
-        altitude: "ارتفاع الطيران",
-        speed: "السرعة الأرضية",
-        power: "طاقة البطارية"
-      },
-      de: {
-        headerTitle: "HK UAM KONTROLLTURM",
-        radarTitle: "LUFTRAUM-RADAR",
-        targetLabel: "ZIELVERFOLGUNG:",
-        altitude: "FLUGHÖHE",
-        speed: "GESCHWINDIGKEIT ÜBER GRUND",
-        power: "BATTERIESTATUS"
-      },
-      it: {
-        headerTitle: "TORRE DI CONTROLLO HK UAM",
-        radarTitle: "RADAR SPAZIO AEREO",
-        targetLabel: "TRACCIAMENTO BERSAGLIO:",
-        altitude: "ALTITUDINE DI VOLO",
-        speed: "VELOCITÀ AL SUOLO",
-        power: "CARICA BATTERIA"
-      },
-      fr: {
-        headerTitle: "TOUR DE CONTRÔLE HK UAM",
-        radarTitle: "RADAR ESPACE AÉRIEN",
-        targetLabel: "SUIVI DE CIBLE:",
-        altitude: "ALTITUDE DE VOL",
-        speed: "VITESSE SOL",
-        power: "NIVEAU DE BATTERIE"
-      }
-    };
+        function changeLanguage(lang) {
+            const t = translations[lang] || translations['en'];
 
-    function changeLanguage(lang) {
-      const elements = document.querySelectorAll('[data-i18n]');
-      elements.forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[lang] && translations[lang][key]) {
-          el.textContent = translations[lang][key];
+            document.getElementById('doc-title').innerText = t.title;
+            document.getElementById('title').innerText = t.title;
+            document.getElementById('radar-title').innerText = t.radarTitle;
+            document.getElementById('radar-footer').innerText = t.radarFooter;
+            document.getElementById('lbl-alt').innerText = t.lblAlt;
+            document.getElementById('lbl-speed').innerText = t.lblSpeed;
         }
-      });
-      
-      // 아랍어/팔레스타인어 선택 시 우측에서 좌측으로 읽는 RTL 레이아웃 자동 전환
-      if (lang === 'ar' || lang === 'pa') {
-        document.body.style.direction = 'rtl';
-      } else {
-        document.body.style.direction = 'ltr';
-      }
-    }
-  </script>
-
+    </script>
 </body>
 </html>
